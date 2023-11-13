@@ -50,7 +50,6 @@ def new_game():
 
 @socketio.on("join_game")
 def handle_join_game(data):
-    print("Join game request received:", data)
     player_id = request.sid
     game_id = data.get("game_id")
     join_room(game_id)
