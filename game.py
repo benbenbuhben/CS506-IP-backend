@@ -46,9 +46,6 @@ class Game:
         self.current_player = 'X'
         self.moves = []
 
-        print(f"Game reset. New current player: {self.current_player}")
-        print(f"Game status after reset: {self.game_status}")
-
     def get_game_state(self):
         winner, winning_line = self.board.check_winner()
         if winning_line and winning_line[0] in self.board.xCoordinates:

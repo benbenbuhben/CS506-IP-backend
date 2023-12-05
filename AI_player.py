@@ -24,102 +24,37 @@ class ArtificialPlayer:
         else:
             ai_moves = board.oCoordinates
             opponent_moves = board.xCoordinates
-
-        lenOfAiMoves = len(ai_moves)
-        lenOfOpponentMoves = len(opponent_moves)
-
-
-        # find winning options
-        if lenOfAiMoves >= 2:
-            if 0 in ai_moves and 1 in ai_moves and 2 in possible_moves:
-                return 2
-            if 3 in ai_moves and 4 in ai_moves and 5 in possible_moves:
-                return 5
-            if 6 in ai_moves and 7 in ai_moves and 8 in possible_moves:
-                return 8
-            # check vertical
-            if 0 in ai_moves and 3 in ai_moves and 6 in possible_moves:
-                return 6
-            if 1 in ai_moves and 4 in ai_moves and 7 in possible_moves:
-                return 7
-            if 2 in ai_moves and 5 in ai_moves and 8 in possible_moves:
-                return 8
-            # check diagonal
-            if 0 in ai_moves and 4 in ai_moves and 8 in possible_moves:
-                return 8
-            if 2 in ai_moves and 4 in ai_moves and 6 in possible_moves:
-                return 6
-        elif lenOfAiMoves == 1:
-            if 0 in ai_moves and 8 in ai_moves and 4 in possible_moves:
-                return 4
-            if 2 in ai_moves and 6 in ai_moves and 4 in possible_moves:
-                return 4
-            if 1 in ai_moves and 7 in ai_moves and 4 in possible_moves:
-                return 4
-            if 3 in ai_moves and 5 in ai_moves and 4 in possible_moves:
-                return 4
-            if 0 in ai_moves and 2 in ai_moves and 1 in possible_moves:
-                return 1
-            if 0 in ai_moves and 6 in ai_moves and 3 in possible_moves:
-                return 3
-            if 2 in ai_moves and 8 in ai_moves and 5 in possible_moves:
-                return 5
-            if 6 in ai_moves and 8 in ai_moves and 7 in possible_moves:
-                return 7
-        else:
-            if 0 in possible_moves and 1 in possible_moves and 2 in possible_moves:
-                return 0
-            if 3 in possible_moves and 4 in possible_moves and 5 in possible_moves:
-                return 3
-            if 6 in possible_moves and 7 in possible_moves and 8 in possible_moves:
-                return 6
-            # check vertical
-            if 0 in possible_moves and 3 in possible_moves and 6 in possible_moves:
-                return 0
-            if 1 in possible_moves and 4 in possible_moves and 7 in possible_moves:
-                return 1
-            if 2 in possible_moves and 5 in possible_moves and 8 in possible_moves:
-                return 2
-            # check diagonal
-            if 0 in possible_moves and 4 in possible_moves and 8 in possible_moves:
-                return 0
-            if 2 in possible_moves and 4 in possible_moves and 6 in possible_moves:
-                return 2
-        # find blocking options
-        if lenOfOpponentMoves >= 2:
-            if 0 in opponent_moves and 1 in opponent_moves and 2 in possible_moves:
-                return 2
-            if 3 in opponent_moves and 4 in opponent_moves and 5 in possible_moves:
-                return 5
-            if 6 in opponent_moves and 7 in opponent_moves and 8 in possible_moves:
-                return 8
-            # check vertical
-            if 0 in opponent_moves and 3 in opponent_moves and 6 in possible_moves:
-                return 6
-            if 1 in opponent_moves and 4 in opponent_moves and 7 in possible_moves:
-                return 7
-            if 2 in opponent_moves and 5 in opponent_moves and 8 in possible_moves:
-                return 8
-            # check diagonal
-            if 0 in opponent_moves and 4 in opponent_moves and 8 in possible_moves:
-                return 8
-            if 2 in opponent_moves and 4 in opponent_moves and 6 in possible_moves:
-                return 6
-        elif lenOfOpponentMoves == 1:
-            if 0 in opponent_moves and 8 in opponent_moves and 4 in possible_moves:
-                return 4
-            if 2 in opponent_moves and 6 in opponent_moves and 4 in possible_moves:
-                return 4
-            if 1 in opponent_moves and 7 in opponent_moves and 4 in possible_moves:
-                return 4
-            if 3 in opponent_moves and 5 in opponent_moves and 4 in possible_moves:
-                return 4
-            if 0 in opponent_moves and 2 in opponent_moves and 1 in possible_moves:
-                return 1
-            if 0 in opponent_moves and 6 in opponent_moves and 3 in possible_moves:
-                return 3
-            if 2 in opponent_moves and 8 in opponent_moves and 5 in possible_moves:
-                return 5
-            if 6 in opponent_moves and 8 in opponent_moves and 7 in possible_moves:
-                return 7
+        win_conditions = [
+            [0, 1, 2, 3, 4],
+            [5, 6, 7, 8, 9],
+            [10, 11, 12, 13, 14],
+            [15, 16, 17, 18, 19],
+            [20, 21, 22, 23, 24],  # Horizontals
+            [0, 5, 10, 15, 20],
+            [1, 6, 11, 16, 21],
+            [2, 7, 12, 17, 22],
+            [3, 8, 13, 18, 23],
+            [4, 9, 14, 19, 24],  # Verticals
+            [0, 6, 12, 18, 24],
+            [4, 8, 12, 16, 20],  # Diagonals
+        ]
+        win_possibility = 0
+        for condition in win_conditions:
+            for con in condition:
+                if con in ai_moves:
+                    win_possibility += 1
+            if win_possibility == 4:
+                for con in condition:
+                    if con in possible_moves:
+                        return con
+            win_possibility = 0
+        for condition in win_conditions:
+            for con in condition:
+                if con in opponent_moves:
+                    win_possibility += 1
+            if win_possibility == 4:
+                for con in condition:
+                    if con in possible_moves:
+                        return con
+            win_possibility = 0        
         return random.choice(possible_moves)
