@@ -1,14 +1,17 @@
 import random
 from board import Board
+from AI_player import ArtificialPlayer
 
 
 class Game:
-    def __init__(self, game_id):
+    def __init__(self, game_id, is_ai=False):
         self.game_id = game_id
         self.board = Board()
         self.players = {}
-        self.current_player = random.choice(["X", "O"])
+        self.is_ai = is_ai
+        self.current_player = 'X'
         self.moves = []
+        self.ai_player = ArtificialPlayer('O')
 
     def add_player(self, player_id):
         """Assigns a symbol to the new player."""
@@ -40,7 +43,7 @@ class Game:
 
     def reset_game(self):
         self.board = Board()
-        self.current_player = random.choice(["X", "O"])
+        self.current_player = 'X'
         self.moves = []
 
         print(f"Game reset. New current player: {self.current_player}")
@@ -48,6 +51,12 @@ class Game:
 
     def get_game_state(self):
         winner, winning_line = self.board.check_winner()
+        if winning_line and winning_line[0] in self.board.xCoordinates:
+            winnerPlayer = 'X'
+        elif winning_line and winning_line[0] in self.board.oCoordinates:
+            winnerPlayer = 'O'
+        else:
+            winnerPlayer = None
         return {
             "game_id": self.game_id,
             "board": self.board.get_board(),
@@ -57,4 +66,5 @@ class Game:
             "draw": self.board.is_full() and not winner,
             "moves": self.moves,
             "game_status": self.game_status,
+            'winnerPlayer': winnerPlayer
         }
