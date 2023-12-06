@@ -45,7 +45,7 @@ def handle_test_connection(data):
 @app.route("/new_game", methods=["POST"])
 def new_game():
     game_id = generate_unique_game_id()
-    is_ai = json.loads(request.data)['ai']
+    is_ai = request.json.get("ai")
     games[game_id] = Game(game_id, is_ai=is_ai)
     return jsonify({"game_id": game_id}), 200
 
@@ -63,7 +63,7 @@ def handle_join_game(data):
 
         # Get the general game state
         general_game_state = game.get_game_state()
-        
+
         # Emit the general game state to the room (without player_symbol)
         emit("game_state", general_game_state, room=game_id, include_self=False)
 
@@ -74,11 +74,11 @@ def handle_join_game(data):
 
         if game.is_ai and len(game.players) == 1:
             # Add AI player
-            symbol = game.add_player('ai')
+            symbol = game.add_player("ai")
             # Emit personalized game state to the AI player
             personalized_game_state = general_game_state.copy()
             personalized_game_state["player_symbol"] = symbol
-            emit("game_state", personalized_game_state, to='ai')
+            emit("game_state", personalized_game_state, to="ai")
         else:
             # Emit personalized game state to other players
             for pid in game.players:
@@ -108,7 +108,7 @@ def handle_make_move(data):
             personalized_game_state["player_symbol"] = symbol
             emit("game_state", personalized_game_state, to=pid)
             print(game.get_game_state())
-    if game.is_ai and game.current_player == 'O':
+    if game.is_ai and game.current_player == "O":
         # AI player move
         position = game.ai_player.get_move(game.board)
         game.make_move(position)

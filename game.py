@@ -9,9 +9,9 @@ class Game:
         self.board = Board()
         self.players = {}
         self.is_ai = is_ai
-        self.current_player = 'X'
+        self.current_player = "X"
         self.moves = []
-        self.ai_player = ArtificialPlayer('O')
+        self.ai_player = ArtificialPlayer("O")
 
     def add_player(self, player_id):
         """Assigns a symbol to the new player."""
@@ -43,15 +43,15 @@ class Game:
 
     def reset_game(self):
         self.board = Board()
-        self.current_player = 'X'
+        self.current_player = "X"
         self.moves = []
 
     def get_game_state(self):
         winner, winning_line = self.board.check_winner()
         if winning_line and winning_line[0] in self.board.xCoordinates:
-            winnerPlayer = 'X'
+            winnerPlayer = "X"
         elif winning_line and winning_line[0] in self.board.oCoordinates:
-            winnerPlayer = 'O'
+            winnerPlayer = "O"
         else:
             winnerPlayer = None
         return {
@@ -63,5 +63,6 @@ class Game:
             "draw": self.board.is_full() and not winner,
             "moves": self.moves,
             "game_status": self.game_status,
-            'winnerPlayer': winnerPlayer
+            "winnerPlayer": winnerPlayer,
+            "is_ai": self.is_ai,
         }
